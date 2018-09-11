@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, 	maximum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no, email=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<link rel="stylesheet" href="css/swiper.min.css">
+	<link rel="stylesheet" href="fonts/iconfont.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/animate.min.css">
+
+	<script>
+		
+		window.onload=function(){
+			getRem(375,100); //720指定设计稿宽度  100 换算比例
+		}
+		window.onresize=function(){
+			getRem(375,100);
+		}
+		
+		function getRem(pwidth,prem){
+			var html=document.getElementsByTagName('html')[0];
+			var oWidth=document.documentElement.clientWidth || document.body.clientWidth;
+			html.style.fontSize=oWidth/pwidth*100+'px';
+		}
+	</script>
+</head>
+<body>
+	
+	<div class="loading">
+		
+		<img src="images/39.gif" alt="">
+		<span class='wrappercent'>0%</span>
+	</div>
+
+	<div class="wrap swiper-container">
+		
+		<ul class="container swiper-wrapper">
+			<li class="swiper-slide page1">
+				<img class="animated fadeInUp" src="images/m_tit.png" alt="">
+				<img class="animated fadeInUp" src="images/m_icon2.png" alt="">
+				<img class="animated fadeInUp" src="images/m_icon1.png" alt="">
+				<span class="animated fadeInUp">立即下载</span>
+				<div class="btn animated move"></div>
+			</li>
+			<li class="page2 subSwiper swiper-slide swiper-container">
+				<ul class="swiper-wrapper">
+					<li class="subpage1 swiper-slide sub-img">
+						<span>及时沟通</span>
+						<div>和老板直接聊offer</div>
+						<img src="images/m_chat1.png" alt="">
+						<img src="images/m_float1.png" class="left-tip animated zoomInLeft" alt="">
+						<img src="images/m_float2.png" class="right-tip animated zoomInRight" alt="">
+					</li>
+					<li class="subpage2 swiper-slide">
+					<img src="images/m_float3.png" alt="">
+					<img src="images/m_chat2.png" alt="">
+					<img src="images/m_star.png" class="star animated zoomIn" alt="">
+					<img src="images/m_star.png" class="star animated zoomIn" alt="">
+					<img src="images/m_star.png" class="star animated zoomIn" alt="">
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<script src="js/swiper.min.js"></script>
+	<script src="js/swiper.animate1.0.2.min.js"></script>
+	<script src="js/iscroll5.js"></script>
+	<script src="js/zepto.min.js"></script>
+	<script>
+		
+		// window.addEventListener('DOMContentLoaded',init)
+		function init(){
+			document.onreadystatechange=function(){
+					console.log(this.readyState)
+					if (this.readyState==='complete') {
+						$('.loading').hide();
+						$('.fadeInUp').css('display','block');
+						$('.btn').show();					
+					}
+				}
+			var myswiper=new Swiper('.wrap',{
+				direction:'vertical',
+				// initialSlide:1
+			});
+			$('.page'+(myswiper.activeIndex+2)).find('img,.btn').hide();
+			myswiper.on('transitionEnd',function(){
+				console.log(myswiper.activeIndex);
+				console.log(myswiper.previousIndex);
+				var cur=$('.page'+(myswiper.activeIndex+1));
+				var prev=$('.page'+(myswiper.previousIndex+1));
+				prev.find("img,.btn").hide();
+				cur.find('img,.btn').show();				
+			})
+			var sub=new Swiper('.subSwiper',{
+				// initialSlide:1
+			});
+			sub.on('transitionEnd',function(){
+				console.log(sub.activeIndex);
+				console.log(sub.previousIndex);
+				var cur=$('.subpage'+(sub.activeIndex+1));
+				var prev=$('.subpage'+(sub.previousIndex+1));
+				var next=$('.page'+(myswiper.previousIndex+2));
+				next.find('img,.btn').hide()
+				prev.find("img,.btn").hide();
+				cur.find('img,.btn').show();
+			})
+		}
+		var img=$('body').find('img');
+		var len=img.length;
+		var count=0;
+		$.each(img,function(index,value){
+			var imgObj=new Image();
+			imgObj.onload=function(){
+				count++;
+				scale=count/len;
+				console.log(scale)
+				$('.wrappercent').text(parseInt(scale*100)+'%');
+				if (count==len) {
+
+					init();
+				}
+			}
+			imgObj.src=value.src;
+		});
+
+
+	</script>
+</body>
+</html>
